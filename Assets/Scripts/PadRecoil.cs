@@ -60,6 +60,7 @@ public class PadRecoil : MonoBehaviour
     }
     private void StartRecoil(Vector2 direction, float distance)
     {
+        localRest = transform.localPosition;
         direction.Normalize();
 
         if (recoilRoutine != null)

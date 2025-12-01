@@ -9,11 +9,16 @@
         {
             if (!exited)
             {
-                StartCoroutine(ExitRoutine());
+                // StartCoroutine(ExitRoutine());
+                SFX.Instance.Play("click_exit");
+                // yield return new WaitForSeconds(1f); // play sound
+                Application.Quit();
+                Debug.Log("Exiting game...");
                 exited = true;
             }
         }
 
+        // TODO Does not work
         private IEnumerator ExitRoutine()
         {
             SFX.Instance.Play("click_exit");

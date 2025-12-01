@@ -3,11 +3,10 @@ using UnityEngine;
 
 public class PadLogic : MonoBehaviour
 {
-    private const float MaxBallVelocity = 30f;
+    private const float MaxBallVelocity = 40f;
     private const float MinBallVelocityX = 4f;
     private const float MinBallVelocityY = 0f;
     private static readonly int HitTrigger = Animator.StringToHash("hitTrigger");
-
 
     [SerializeField]
     private float dampingFactor;
@@ -23,6 +22,8 @@ public class PadLogic : MonoBehaviour
 
     private Rigidbody2D rb;
     private PadRecoil recoil;
+    private PadLoseVfx padLoseVfx;
+    private PaddleIntroSpawn paddleIntroSpawn;
 
     private float speed;
     private float wallCheckDistance;
@@ -34,6 +35,8 @@ public class PadLogic : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<Collider2D>();
         recoil = GetComponentInChildren<PadRecoil>();
+        padLoseVfx = GetComponentInChildren<PadLoseVfx>();
+        paddleIntroSpawn = GetComponentInChildren<PaddleIntroSpawn>();
         anim = GetComponentInChildren<Animator>();
         wallCheckDistance = col.bounds.max.y;
         speed = GameSessionSettingsRuntime.Instance?.padSpeed ?? 8;
@@ -72,8 +75,26 @@ public class PadLogic : MonoBehaviour
         if (!other.gameObject.CompareTag("Ball")) return;
         SFX.Instance.Play("hit");
         SpawnCollisionParticles(other);
-        recoil.HandleBallCollision(other);
         anim.SetTrigger(HitTrigger);
+        if (other.rigidbody.linearVelocityX >= MaxBallVelocity)
+        {
+            SFX.Instance.Play("explosion");
+            padLoseVfx.LaunchFromExplosion(other.transform.position, false);
+            StartCoroutine(ReturnRoutine());
+        }
+        else
+        {
+            recoil.HandleBallCollision(other);
+        }
+    }
+
+    private IEnumerator ReturnRoutine()
+    {
+        yield return new WaitForSeconds(1);
+        padLoseVfx.UndoLaunch();
+        yield return new WaitForSeconds(2);
+        paddleIntroSpawn.PlayIntro();
+        SFX.Instance.Play("whoosh");
     }
 
     private void OnCollisionExit2D(Collision2D other)
@@ -81,10 +102,11 @@ public class PadLogic : MonoBehaviour
         if (!other.gameObject.CompareTag("Ball")) return;
         int ySign = other.rigidbody.linearVelocityY > 0 ? 1 : -1;
         int xSign = other.rigidbody.linearVelocityX > 0 ? 1 : -1;
-        float nextXVelocity = Mathf.Clamp(Mathf.Abs(other.rigidbody.linearVelocityX) + 2f, MinBallVelocityX,
-            MaxBallVelocity);
-        float nextYVelocity = Mathf.Clamp(Mathf.Abs(other.rigidbody.linearVelocityY) + 1f, MinBallVelocityY,
-            MaxBallVelocity);
+        var step = Mathf.Abs(other.rigidbody.linearVelocityX) > MaxBallVelocity * 0.75f
+            ? 0.5f
+            : 2f;
+        float nextXVelocity = Mathf.Clamp(Mathf.Abs(other.rigidbody.linearVelocityX) + step, MinBallVelocityX, MaxBallVelocity);
+        float nextYVelocity = Mathf.Clamp(Mathf.Abs(other.rigidbody.linearVelocityY) + step / 2, MinBallVelocityY, MaxBallVelocity);
         other.rigidbody.linearVelocityX = xSign * nextXVelocity;
         other.rigidbody.linearVelocityY = ySign * nextYVelocity;
     }

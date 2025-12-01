@@ -25,6 +25,11 @@ public class PaddleIntroSpawn : MonoBehaviour
         restPosition = paddle.position;
     }
 
+    public void UpdateRestPosition(Vector2 restPosition)
+    {
+        this.restPosition = restPosition;
+    }
+
     public void PlayIntro()
     {
         if (currentRoutine != null)
