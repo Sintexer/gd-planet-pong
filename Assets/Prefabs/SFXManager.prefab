@@ -107,7 +107,7 @@ MonoBehaviour:
   menuMusic:
     id: menu
     clips:
-    - {fileID: 8300000, guid: 6ee3031af78c84bb890c2cbce53e8bc5, type: 3}
+    - {fileID: 8300000, guid: bccd293073472495cabafa0d3b1a43b3, type: 3}
     volume: 0.161
   gameMusic:
     id: game

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: GameSessionSettings
   m_EditorClassIdentifier: Assembly-CSharp::GameSessionSettings
   defaultAiDifficulty: 0
-  normalInitSpeed: {x: 6, y: 3}
-  hardInitSpeed: {x: 10, y: 7}
+  normalInitSpeed: {x: 6, y: 1}
+  hardInitSpeed: {x: 9, y: 3}
   targetScore: 5
   padSpeed: 10
