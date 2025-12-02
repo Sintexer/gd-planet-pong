@@ -19,9 +19,9 @@
 
 ## Screenshots
 
-<img src="/Screenshots/planet-pong-6.png" width="480"/> <img src="/Screenshots/planet-pong-1.png" width="480" />
-<img src="/Screenshots/planet-pong-2.png" width="480"/> <img src="/Screenshots/planet-pong-3.png" width="480"/>
-<img src="/Screenshots/planet-pong-4.png" width="480"/> <img src="/Screenshots/planet-pong-5.png" width="480"/>
+<img src="/Screenshots/planet-pong-6.png" width="300"/> <img src="/Screenshots/planet-pong-1.png" width="300" />
+<img src="/Screenshots/planet-pong-2.png" width="300"/> <img src="/Screenshots/planet-pong-3.png" width="300"/>
+<img src="/Screenshots/planet-pong-4.png" width="300"/> <img src="/Screenshots/planet-pong-5.png" width="300"/>
 
 
 ## Controls
